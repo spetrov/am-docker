@@ -1,0 +1,59 @@
+#
+# Copyright 2016-2019 ForgeRock AS. All Rights Reserved
+#
+# Use of this code requires a commercial software license with ForgeRock AS.
+# or with one of its affiliates. All use shall be exclusively subject
+# to such license between the licensee and ForgeRock AS.
+#
+dn: cn=schema
+changetype: modify
+add: attributeTypes
+###
+# Internal User Attributes
+###
+attributeTypes: ( 1.3.6.1.4.1.36733.2.3.1.8 NAME 'fr-idm-password'
+    SYNTAX 1.3.6.1.4.1.36733.2.1.3.1 EQUALITY caseIgnoreJsonQueryMatch ORDERING caseIgnoreOrderingMatch SINGLE-VALUE X-STABILITY 'Internal' X-ORIGIN 'OpenIDM DSRepoService')
+###
+# Explicit Managed User Schema Attributes
+###
+attributeTypes: ( 1.3.6.1.4.1.36733.2.3.1.9 NAME 'fr-idm-role'
+    SYNTAX 1.3.6.1.4.1.36733.2.1.3.1 ORDERING caseIgnoreJsonQueryMatch X-STABILITY 'Internal' X-ORIGIN 'OpenIDM DSRepoService' )
+attributeTypes: ( 1.3.6.1.4.1.36733.2.3.1.14 NAME 'fr-idm-accountStatus'
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 X-STABILITY 'Internal' X-ORIGIN 'OpenIDM DSRepoService' )
+attributeTypes: ( 1.3.6.1.4.1.36733.2.3.1.15 NAME 'fr-idm-effectiveRole'
+    SYNTAX 1.3.6.1.4.1.36733.2.1.3.1 EQUALITY caseIgnoreJsonQueryMatch ORDERING caseIgnoreOrderingMatch X-STABILITY 'Internal' X-ORIGIN 'OpenIDM DSRepoService' )
+attributeTypes: ( 1.3.6.1.4.1.36733.2.3.1.16 NAME 'fr-idm-effectiveAssignment'
+    SYNTAX 1.3.6.1.4.1.36733.2.1.3.1 EQUALITY caseIgnoreJsonQueryMatch ORDERING caseIgnoreOrderingMatch X-STABILITY 'Internal' X-ORIGIN 'OpenIDM DSRepoService' )
+attributeTypes: ( 1.3.6.1.4.1.36733.2.3.1.17 NAME 'fr-idm-kbaInfo'
+    SYNTAX 1.3.6.1.4.1.36733.2.1.3.1 EQUALITY caseIgnoreJsonQueryMatch ORDERING caseIgnoreOrderingMatch X-STABILITY 'Internal' X-ORIGIN 'OpenIDM DSRepoService' )
+attributeTypes: ( 1.3.6.1.4.1.36733.2.3.1.18 NAME 'fr-idm-lastSync'
+    SYNTAX 1.3.6.1.4.1.36733.2.1.3.1 EQUALITY caseIgnoreJsonQueryMatch ORDERING caseIgnoreOrderingMatch X-STABILITY 'Internal' X-ORIGIN 'OpenIDM DSRepoService' )
+attributeTypes: ( 1.3.6.1.4.1.36733.2.3.1.19 NAME 'fr-idm-preferences'
+    SYNTAX 1.3.6.1.4.1.36733.2.1.3.1 EQUALITY caseIgnoreJsonQueryMatch ORDERING caseIgnoreOrderingMatch X-STABILITY 'Internal' X-ORIGIN 'OpenIDM DSRepoService' )
+attributeTypes: ( 1.3.6.1.4.1.36733.2.3.1.23 NAME 'fr-idm-consentedMapping'
+    SYNTAX 1.3.6.1.4.1.36733.2.1.3.1 EQUALITY caseIgnoreJsonQueryMatch ORDERING caseIgnoreOrderingMatch X-STABILITY 'Internal' X-ORIGIN 'OpenIDM DSRepoService' )
+attributeTypes: ( 1.3.6.1.4.1.36733.2.3.1.60 NAME 'fr-idm-uuid'
+    SYNTAX 1.3.6.1.1.16.1 X-ORIGIN 'OpenIDM DSRepoService' )
+-
+add: objectClasses
+###
+# Explicit Managed User Schema ObjectClasses
+###
+objectClasses: ( 1.3.6.1.4.1.36733.2.3.2.16 NAME 'fr-idm-managed-user-explicit'
+    SUP inetOrgPerson
+    MAY ( fr-idm-uuid $
+        fr-idm-accountStatus $
+        fr-idm-password $
+        pwdCheckQuality $
+        pwdMinLength $
+        pwdExpireWarning $
+        fr-idm-role $
+        fr-idm-effectiveRole $
+        fr-idm-effectiveAssignment $
+        fr-idm-kbaInfo $
+        fr-idm-lastSync $
+        fr-idm-preferences $
+        fr-idm-consentedMapping )
+    X-STABILITY 'Internal'
+    X-ORIGIN 'OpenIDM DSRepoService' )
+-

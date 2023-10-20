@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright 2016-2020 ForgeRock AS. All Rights Reserved
+
+  Use of this code requires a commercial software license with ForgeRock AS.
+  or with one of its affiliates. All use shall be exclusively subject
+  to such license between the licensee and ForgeRock AS.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.forgerock.am</groupId>
+        <artifactId>openam-ui</artifactId>
+        <version>7.1.0</version>
+    </parent>
+
+    <artifactId>openam-ui-api</artifactId>
+    <name>OpenAM UI API</name>
+    <packaging>jar</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>/mnt/scratch/workspaces/workspace/am-release_sustaining_7.1.x-FIJAXGJEOHHD23EXRKGS7SVIW5ZKBARITB5PINWCV2RO46DIFNXA/openam-server-only/target/www</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>**</include>
+                    <include>*</include>
+                </includes>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>node_modules</directory>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.9.1</version>
+                <configuration>
+                    <installDirectory>target</installDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>install-node-and-yarn</id>
+                        <goals>
+                            <goal>install-node-and-yarn</goal>
+                        </goals>
+                        <phase>initialize</phase>
+                        <configuration>
+                            <nodeVersion>v12.14.0</nodeVersion>
+                            <yarnVersion>v1.21.1</yarnVersion>
+                            <nodeDownloadRoot>https://maven.forgerock.org/repo/forgerock-third-party-virtual/</nodeDownloadRoot>
+                            <yarnDownloadRoot>https://maven.forgerock.org/repo/yarn-cache-local/</yarnDownloadRoot>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>yarn-install</id>
+                        <goals>
+                            <goal>yarn</goal>
+                        </goals>
+                        <phase>initialize</phase>
+                        <configuration>
+                            <arguments>install --mutex=file:/tmp/.yarn-mutex --non-interactive --frozen-lockfile</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>yarn-run-build</id>
+                        <goals>
+                            <goal>yarn</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <arguments>run build:production</arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright 2011-2020 ForgeRock AS. All Rights Reserved
+ 
+  Use of this code requires a commercial software license with ForgeRock AS.
+  or with one of its affiliates. All use shall be exclusively subject
+  to such license between the licensee and ForgeRock AS.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Parent Project -->
+    <parent>
+        <groupId>org.forgerock.am</groupId>
+        <artifactId>openam-parent</artifactId>
+        <version>7.1.0</version>
+    </parent>
+
+    <!-- Component Definition -->
+    <name>OpenAM Server</name>
+    <description>OpenAM Server Component</description>
+    <artifactId>openam-server</artifactId>
+    <packaging>war</packaging>
+
+    <!-- Build -->
+    <build>
+        <finalName>OpenAM-${project.version}</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-descriptors</id>
+                        <phase>prepare-package</phase>
+                        <goals><goal>copy</goal></goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes/descriptor</outputDirectory>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.forgerock.am</groupId>
+                                    <artifactId>openam-server</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>crestapi</type>
+                                    <destFileName>crestapi.json</destFileName>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.forgerock.am</groupId>
+                                    <artifactId>openam-server</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>apiasciidoc</type>
+                                    <destFileName>crestapi.asciidoc</destFileName>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.forgerock.am</groupId>
+                                    <artifactId>openam-server</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>apihtml</type>
+                                    <destFileName>crestapi.html</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <dependencies>
+        <dependency>
+            <groupId>org.forgerock.am</groupId>
+            <artifactId>openam-server-only</artifactId>
+            <type>war</type>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <id>descriptor</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.forgerock.am</groupId>
+                        <artifactId>openam-maven-plugins</artifactId>
+                        <version>${project.version}</version>
+                        <executions>
+                            <execution>
+                                <phase>process-classes</phase>
+                                <goals><goal>generate</goal></goals>
+                            </execution>
+                        </executions>
+
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.forgerock.am</groupId>
+                                <artifactId>openam-server-only</artifactId>
+                                <version>${project.version}</version>
+                                <classifier>classes</classifier>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>release</id>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.forgerock.am</groupId>
+                            <artifactId>openam-maven-plugins</artifactId>
+                            <version>${project.version}</version>
+                            <dependencies>
+                                <dependency>
+                                    <artifactId>openam-auth-securid</artifactId>
+                                    <groupId>org.forgerock.am</groupId>
+                                    <version>${project.version}</version>
+                                    <exclusions>
+                                        <exclusion>
+                                            <groupId>external</groupId>
+                                            <artifactId>authapi</artifactId>
+                                        </exclusion>
+                                    </exclusions>
+                                </dependency>
+                            </dependencies>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+        <profile>
+            <id>development</id>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.forgerock.am</groupId>
+                            <artifactId>openam-maven-plugins</artifactId>
+                            <version>${project.version}</version>
+                            <dependencies>
+                                <dependency>
+                                    <artifactId>openam-auth-securid</artifactId>
+                                    <groupId>org.forgerock.am</groupId>
+                                    <version>${project.version}</version>
+                                    <exclusions>
+                                        <exclusion>
+                                            <groupId>external</groupId>
+                                            <artifactId>authapi</artifactId>
+                                        </exclusion>
+                                    </exclusions>
+                                </dependency>
+                            </dependencies>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+        <profile>
+            <id>push-perf-test</id>
+            <dependencies>
+                <dependency>
+                    <groupId>com.forgerock.openam</groupId>
+                    <artifactId>openam-mock-sns</artifactId>
+                    <version>1.0.0-SNAPSHOT</version>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>forgerock-dev</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.forgerock.am</groupId>
+                    <artifactId>custom-auth-node</artifactId>
+                    <version>${project.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.forgerock.am</groupId>
+                    <artifactId>custom-suspend-node</artifactId>
+                    <version>${project.version}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+
+</project>

@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[153],{1249:function(n,e,a){var l=a(158);n.exports=(l.default||l).template({compiler:[8,">= 4.3.0"],main:function(n,e,a,l,o){var s,t=n.lookupProperty||function(n,e){if(Object.prototype.hasOwnProperty.call(n,e))return n[e]};return'<div class="cell-model-icon">\n    <span><i class="fa"></i></span>\n</div>\n<div class="cell-model-name">\n    '+n.escapeExpression(n.lambda(null!=(s=null!=e?t(e,"attributes"):e)?t(s,"name"):s,e))+"\n</div>\n"},useData:!0})}}]);
+//# sourceMappingURL=153.6cd35c0d00.js.map
